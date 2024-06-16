@@ -26,6 +26,9 @@ export default class Level extends Phaser.Scene {
         this.mesa = this.add.image(240, 320, "mesa");   //Mesa
         this.score = this.add.image(400, 300, "score");  //Puntuación
 
+        //Personajes
+        
+
         /* CONTADOR */
         this.time = 90  //Tiempo que vamos a ir modificando
         this.contador = this.add.text(230, 30, this.time, { //Texto
