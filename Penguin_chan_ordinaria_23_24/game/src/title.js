@@ -84,26 +84,25 @@ export default class Title extends Phaser.Scene {
         });
 
         //Emitimos el evento de cambio de escena cuando seleccionamos una opción
+        //Lo hacemos así porque scene no existe fuera del create
         this.eventEmitter.on('select', function() {
-            //scene.scene.start('Level', { data: this.value + 1 });
-            console.log("evento");
+            this.ChangeScene('level', scene, this.selection)
         }, this);
 
         /* CURSOR */
         //Ponemos la posición y luego la imagen en si
-        this.ball = this.add.image(this.OneplayerButton.x, this.OneplayerButton.y, 'ball');
+        this.ball = this.add.image(this.OneplayerButton.x - 10, this.OneplayerButton.y + 12, 'ball');
+        this.selection = 'one'; //Para saber el modo que se elige
 	}
 
     update() {
         if (this.cursors.up.isDown) {
-            //this.value = 0;
-            //this.ball.y = this.oneplayerbutton.y;
-            console.log("arriba");
+            this.selection = 'one';
+            this.ball.y = this.OneplayerButton.y + 12;
         }
         if (this.cursors.down.isDown) {
-            //this.value = 1;
-            //this.ball.y = this.vsgamebutton.y;
-            console.log("abajo");
+            this.selection = 'vs'
+            this.ball.y = this.VSButton.y + 12;
         }
 
         if (this.cursors.select.isDown) {
@@ -113,13 +112,8 @@ export default class Title extends Phaser.Scene {
 
     //Métodos
     ChangeScene(newScene, escena, players) {
-
-        //Comprobamos que se haya pulsado la tecla que queremos
-        //if(e.keyCode)
         //Cargamos la nueva escena
         //El segundo parámetro dicta el número de jugadores
-        //escena.scene.start(newScene, players);
-
-        console.log(players);
+        escena.scene.start(newScene, players);
     }
 }
