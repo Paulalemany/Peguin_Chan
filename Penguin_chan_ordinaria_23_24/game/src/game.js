@@ -1,3 +1,4 @@
+import Title from "./Title";
 
 let config = {
 	type: Phaser.AUTO,
@@ -12,7 +13,8 @@ let config = {
 		height: 512,
 		zoom: 1
 	},
-	scene: [],
+	//Array de escenas
+	scene: [Title],
 	physics: { 
 		default: 'arcade', 
 		arcade: { 
