@@ -8,11 +8,16 @@ export default class Boot extends Phaser.Scene {
 
     //Cargamos en esta clase todas las img del juego
     preload(){
-        this.load.image('ball', './assets/ball16.png');
+
+        this.load.image('ball', './assets/ball16.png');     //Pelota
+
+        this.load.image('fondo', './assets/background.png'); //Fondo
+        this.load.image('mesa', './assets/table.png');       //mesa
+        this.load.image('score', './assets/score.png');      //Puntuación
     }
 
     //Pasamos a la escena del menú
     create() {
-        this.scene.start("title");
+        this.scene.start("level");
     }
 }
