@@ -10,6 +10,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         super(scene, x, y);
         this.player = player;
         this.scene = scene;
+        this.ballOnHand = scene.add.image (this.x + 12, this.y - 5, 'ball');
+        this.ballOnHand.setVisible(false);
        
         // crea un sprite de ARCADE con fisicas con la posicion y la imagen
         if (player == 1) {
@@ -18,6 +20,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             //Guardamos las animaciones para poder usarlas en cualquier momento
             this.idleAnim = 'penguinIdle';
             this.moveAnim = 'penguinMove';
+            this.getBallAnim = 'penguinIdleBall';
+            this.moveBallAnim = 'penguinMoveBall';
     
             /* INPUT */
             this.a = this.scene.input.keyboard.addKey('A');
@@ -53,6 +57,13 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     preUpdate(time, deltaTime) {
         super.preUpdate(time, deltaTime);
+
+        //Pelota que llevamos en la mano
+        if(this.haveBall) {
+            this.ballOnHand.setVisible(true);
+            this.ballOnHand.x = this.x + 12;
+        }
+
         this.move();
 
         //Logica de las pelotas
@@ -60,19 +71,22 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             
             if (this.haveBall) {    //Tenemos una pelota en las manos
 
+                
             }
             else {  //No tenemos ninguna pelota en las manos
                 //Diferenciamos que jugador coge la pelota
                 if (this.player == 1 && this.scene.playerOneCanTake){
 
-                    console.log("Puede el 1");
+                    //Tenemos una pelota aproposito para la que cojamos
+                    
+
+                    
                 } else if (this.player == 2 && this.scene.playerTwoCanTake){
 
                     console.log("Puede el 2");
                 }
             }
         }
-
     }
 
     //Se encarga de cambiar las animaciones
@@ -86,18 +100,33 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     move() {
 
         //input
-        if (this.x > 145 && this.a.isDown) {    //Izquierda
+        if (this.a.isDown || this.d.isDown) {
 
-            this.animate(this.moveAnim);
-            this.setVelocityX(-this.speed);
-        }
-        else if (this.x < 340 && this.d.isDown) {   //Derecha
+            //movimiento
+            if (this.x > 145 && this.a.isDown) {    //Izquierda
+                this.setVelocityX(-this.speed);
+            }
+            else if (this.x < 340 && this.d.isDown) {   //Derecha
+                this.setVelocityX(this.speed);
+            }
 
-            this.animate(this.moveAnim);
-            this.setVelocityX(this.speed);
+            //Animación
+            if (this.haveBall){
+                this.animate(this.moveBallAnim);
+            }
+            else {
+                this.animate(this.moveAnim);
+            }
         }
+        
         else {  //Quieta
-            this.animate(this.idleAnim);
+
+            if (this.haveBall) {
+                this.animate(this.getBallAnim)
+            }
+            else {
+                this.animate(this.idleAnim);
+            }
             this.setVelocityX(0);
         }
     }
