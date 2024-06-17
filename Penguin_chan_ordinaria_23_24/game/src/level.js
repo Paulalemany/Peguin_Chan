@@ -32,15 +32,19 @@ export default class Level extends Phaser.Scene {
 
         //Pelotas
         //Bucles for en javaScript
-        var pelotas = new Array(10); 
+        this.pelotas = []; 
         for (let step = 0; step < 10; step++) {
 
+            let ball; 
+
             if (step < 5) {    //pelotas de la rat
-                pelotas [step] = new Ball(scene, 160 + ( step * 40 ), 170, 0);
+                ball = new Ball(scene, 160 + ( step * 40 ), 170, 0);
             }
             else {
-                pelotas [step] = new Ball(scene, 160 + ( (step - 5) * 40 ), 460, 0);
+                ball = new Ball(scene, 160 + ( (step - 5) * 40 ), 460, 0);
             }
+
+            this.pelotas.push(ball);
             
         }
 
@@ -54,7 +58,7 @@ export default class Level extends Phaser.Scene {
             this.playerdos = new Player(scene, 230, 170, 2);
         }
         else {  //Jugador contra IA
-            this.enemy = new Enemy(scene, 230, 170);
+            this.playerdos = new Enemy(scene, 230, 170);
         }
         
 
@@ -79,9 +83,31 @@ export default class Level extends Phaser.Scene {
     }
 
     update() {
+        //Contador
         if (this.time >= 0) {
             this.contador.setText(this.time);
         }
-       
+
+        //Pelotas
+        this.playerOneCanTake = this.physics.overlap(   //Si se superponen
+            this.pelotas, this.player, (ball, player) => {
+                if (!player.haveBall && player.space.isDown) {
+                    player.haveBall = true;
+                    ball.destroy()
+                }
+            }, null, this
+        );
+
+        //Si hay jugador dos lo hacemos también con el jugador dos
+        //Es para que se haga independientemente de si es la IA o el jugador
+        if (this.playerdos !== undefined) {
+            this.playerTwoCanTake = this.physics.overlap(
+                this.pelotas, this.playerdos, (ball, player) => {
+                if (player.ball) {
+                    player.haveBall = true;
+                    ball.destroy();
+                }
+            }, null, this);
+        }
     }
 }

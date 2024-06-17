@@ -12,6 +12,7 @@ export default class Ball extends Phaser.Physics.Arcade.Sprite {
         //-1 -> Arriba
     this.direction = direction;
     scene.add.existing(this);   //Añadimos el objeto a la escena
+    scene.physics.world.enable(this);
 
     this.speed = 100;
 

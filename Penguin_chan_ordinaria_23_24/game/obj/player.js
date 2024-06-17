@@ -8,6 +8,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
         //NO DEBE TENER {} SI SE PONEN INTERPRETA QUE PASAS UN OBJETO
         super(scene, x, y);
+        this.player = player;
+        this.scene = scene;
        
         // crea un sprite de ARCADE con fisicas con la posicion y la imagen
         if (player == 1) {
@@ -37,6 +39,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         
         this.speed = 50;
 
+        //Pelotas
+        this.haveBall = false;  //Al principio no tenemos ninguna pelota cogida
+
         // añade a la escena el objeto entero
         // si no añades esto no se mete en la escena y no mira el preupdate
         scene.add.existing(this);
@@ -50,9 +55,22 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         super.preUpdate(time, deltaTime);
         this.move();
 
-        //Boton de acción
+        //Logica de las pelotas
         if (this.space.isDown) {
-            console.log("Accion");
+            
+            if (this.haveBall) {    //Tenemos una pelota en las manos
+
+            }
+            else {  //No tenemos ninguna pelota en las manos
+                //Diferenciamos que jugador coge la pelota
+                if (this.player == 1 && this.scene.playerOneCanTake){
+
+                    console.log("Puede el 1");
+                } else if (this.player == 2 && this.scene.playerTwoCanTake){
+
+                    console.log("Puede el 2");
+                }
+            }
         }
 
     }
