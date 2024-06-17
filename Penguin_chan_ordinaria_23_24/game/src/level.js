@@ -1,5 +1,6 @@
 import Player from "../obj/player.js";
 import Enemy from "../obj/enemy.js";
+import Ball from "../obj/ball.js";
 
 export default class Level extends Phaser.Scene { 
 
@@ -35,10 +36,10 @@ export default class Level extends Phaser.Scene {
         for (let step = 0; step < 10; step++) {
 
             if (step < 5) {    //pelotas de la rat
-                pelotas [step] = this.add.sprite(160 + ( step * 40 ), 170, 'ball');
+                pelotas [step] = new Ball(scene, 160 + ( step * 40 ), 170, 0);
             }
             else {
-                pelotas [step] = this.add.sprite(160 + ( (step - 5) * 40 ), 450, 'ball');
+                pelotas [step] = new Ball(scene, 160 + ( (step - 5) * 40 ), 460, 0);
             }
             
         }

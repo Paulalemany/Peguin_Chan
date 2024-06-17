@@ -1,5 +1,6 @@
-/* Clase que representa al jugador */
+import Ball from "./ball.js";
 
+/* Clase que representa al jugador */
 export default class Player extends Phaser.Physics.Arcade.Sprite {
     
     //constructor del jugador
