@@ -27,6 +27,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);
         scene.physics.world.enable(this);
         this.body.setImmovable(true);
+        this.body.setSize(32, 32);  //Para que ambos personajes tengan el mismo collider
     }
 
 
@@ -34,14 +35,21 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         super.preUpdate(time, deltaTime);
         this.move();
 
+        //Boton de acción
+        if (this.space.isDown) {
+            console.log("Accion");
+        }
+
     }
 
+    //Se encarga de cambiar las animaciones
     animate(anim) {
         if (this.anims.currentAnim.key !== anim) {
             this.anims.play(anim);
         }
     }
 
+    //Imput unicamente de movimiento
     move() {
 
         //input
