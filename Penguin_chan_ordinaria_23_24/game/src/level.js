@@ -1,3 +1,6 @@
+import Player from "../obj/player.js";
+import Enemy from "../obj/enemy.js";
+
 export default class Level extends Phaser.Scene { 
 
     //constructor de la escena
@@ -27,7 +30,8 @@ export default class Level extends Phaser.Scene {
         this.score = this.add.image(400, 300, "score");  //Puntuación
 
         //Personajes
-        
+        this.player = new Player(scene, 230, 450); //Jugador
+        this.enemy = new Enemy(scene, 230, 170);
 
         /* CONTADOR */
         this.time = 90  //Tiempo que vamos a ir modificando
