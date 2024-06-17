@@ -130,6 +130,6 @@ export default class Boot extends Phaser.Scene {
     //Pasamos a la escena del menú
     create() {
         this.createAnimations();
-        this.scene.start("level");
+        this.scene.start("title");
     }
 }

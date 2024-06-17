@@ -3,24 +3,38 @@
 export default class Player extends Phaser.Physics.Arcade.Sprite {
     
     //constructor del jugador
-    constructor(scene, x, y){
+    constructor(scene, x, y, player){
 
         //NO DEBE TENER {} SI SE PONEN INTERPRETA QUE PASAS UN OBJETO
         super(scene, x, y);
        
         // crea un sprite de ARCADE con fisicas con la posicion y la imagen
-        this.play('penguinIdle');
+        if (player == 1) {
+            this.play('penguinIdle');
 
-        //Guardamos las animaciones para poder usarlas en cualquier momento
-        this.idleAnim = 'penguinIdle';
-        this.moveAnim = 'penguinMove';
+            //Guardamos las animaciones para poder usarlas en cualquier momento
+            this.idleAnim = 'penguinIdle';
+            this.moveAnim = 'penguinMove';
+    
+            /* INPUT */
+            this.a = this.scene.input.keyboard.addKey('A');
+            this.d = this.scene.input.keyboard.addKey('D');
+            this.space = this.scene.input.keyboard.addKey('SPACE');
+        }
+        else {
+            this.play('ratIdle');
 
-        /* INPUT */
+            //Guardamos las animaciones para poder usarlas en cualquier momento
+            this.idleAnim = 'ratIdle';
+            this.moveAnim = 'ratMove';
+    
+            /* INPUT */
+            this.a = this.scene.input.keyboard.addKey('LEFT');
+            this.d = this.scene.input.keyboard.addKey('RIGHT');
+            this.space = this.scene.input.keyboard.addKey('DOWN');
+        }
+        
         this.speed = 50;
-
-        this.a = this.scene.input.keyboard.addKey('A');
-        this.d = this.scene.input.keyboard.addKey('D');
-        this.space = this.scene.input.keyboard.addKey('SPACE');
 
         // añade a la escena el objeto entero
         // si no añades esto no se mete en la escena y no mira el preupdate

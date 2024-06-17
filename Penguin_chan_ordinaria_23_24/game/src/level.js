@@ -29,9 +29,18 @@ export default class Level extends Phaser.Scene {
         this.mesa = this.add.image(240, 320, "mesa");   //Mesa
         this.score = this.add.image(400, 300, "score");  //Puntuación
 
-        //Personajes
-        this.player = new Player(scene, 230, 450); //Jugador
-        this.enemy = new Enemy(scene, 230, 170);
+        /* PERSONAJES*/
+        //El primer personaje es obligatorio
+        this.player = new Player(scene, 230, 450, 1); //Jugador 1
+
+        //El segundo personaje va a depender del modo de juego que sea player o enemy
+        if(this.modGame == 'vs') {   //Jugador contra jugador
+            this.playerdos = new Player(scene, 230, 170, 2);
+        }
+        else {  //Jugador contra IA
+            this.enemy = new Enemy(scene, 230, 170);
+        }
+        
 
         /* CONTADOR */
         this.time = 90  //Tiempo que vamos a ir modificando
