@@ -13,7 +13,14 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
         //Guardamos las animaciones para poder usarlas en cualquier momento
         this.idleAnim = 'penguinIdle';
+        this.moveAnim = 'penguinMove';
 
+        /* INPUT */
+        this.speed = 50;
+
+        this.a = this.scene.input.keyboard.addKey('A');
+        this.d = this.scene.input.keyboard.addKey('D');
+        this.space = this.scene.input.keyboard.addKey('SPACE');
 
         // añade a la escena el objeto entero
         // si no añades esto no se mete en la escena y no mira el preupdate
@@ -25,11 +32,32 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     preUpdate(time, deltaTime) {
         super.preUpdate(time, deltaTime);
+        this.move();
+
     }
 
     animate(anim) {
         if (this.anims.currentAnim.key !== anim) {
             this.anims.play(anim);
+        }
+    }
+
+    move() {
+
+        //input
+        if (this.x > 145 && this.a.isDown) {    //Izquierda
+
+            this.animate(this.moveAnim);
+            this.setVelocityX(-this.speed);
+        }
+        else if (this.x < 340 && this.d.isDown) {   //Derecha
+
+            this.animate(this.moveAnim);
+            this.setVelocityX(this.speed);
+        }
+        else {  //Quieta
+            this.animate(this.idleAnim);
+            this.setVelocityX(0);
         }
     }
     
