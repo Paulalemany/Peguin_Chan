@@ -24,10 +24,25 @@ export default class Level extends Phaser.Scene {
 
         const scene = this;     //Referencia a esta misma escena
 
-        //Colocamos todo lo visual
+        /* VISUALES */
         this.bg = this.add.image(256, 255, "fondo");    //fondo
         this.mesa = this.add.image(240, 320, "mesa");   //Mesa
         this.score = this.add.image(400, 300, "score");  //Puntuación
+
+        //Pelotas
+        //Bucles for en javaScript
+        var pelotas = new Array(10); 
+        for (let step = 0; step < 10; step++) {
+
+            if (step < 5) {    //pelotas de la rat
+                pelotas [step] = this.add.sprite(160 + ( step * 40 ), 170, 'ball');
+            }
+            else {
+                pelotas [step] = this.add.sprite(160 + ( (step - 5) * 40 ), 450, 'ball');
+            }
+            
+        }
+
 
         /* PERSONAJES*/
         //El primer personaje es obligatorio
