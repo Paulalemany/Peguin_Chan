@@ -40,7 +40,7 @@ export default class Level extends Phaser.Scene {
             if (step < 5) {    //pelotas de la rat
                 ball = new Ball(scene, 160 + ( step * 40 ), 170, 0);
             }
-            else {
+            else {  //Pelotas del pinguino
                 ball = new Ball(scene, 160 + ( (step - 5) * 40 ), 460, 0);
             }
 
@@ -83,11 +83,6 @@ export default class Level extends Phaser.Scene {
     }
 
     update() {
-        //Contador
-        if (this.time >= 0) {
-            this.contador.setText(this.time);
-        }
-
         //Pelotas
         this.playerOneCanTake = this.physics.overlap(   //Si se superponen
             this.pelotas, this.player, (ball, player) => {
@@ -100,14 +95,19 @@ export default class Level extends Phaser.Scene {
 
         //Si hay jugador dos lo hacemos también con el jugador dos
         //Es para que se haga independientemente de si es la IA o el jugador
-        if (this.playerdos !== undefined) {
+        if (this.playerdos !== undefined && this.modGame == 'vs') {
             this.playerTwoCanTake = this.physics.overlap(
                 this.pelotas, this.playerdos, (ball, player) => {
-                if (player.ball) {
+                if (!player.haveBall && player.space.isDown) {
                     player.haveBall = true;
                     ball.destroy();
                 }
             }, null, this);
+        }
+
+        //Contador
+        if (this.time >= 0) {
+            this.contador.setText(this.time);
         }
     }
 }

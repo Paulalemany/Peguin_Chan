@@ -10,7 +10,11 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         super(scene, x, y);
         this.player = player;
         this.scene = scene;
-        this.ballOnHand = scene.add.image (this.x + 12, this.y - 5, 'ball');
+        this.offsetx = 12;
+        this.offsety = 5;
+        this.balldir;
+        this.haveBall = false; 
+        this.ballOnHand = scene.add.image (this.x + this.offsetx, this.y - this.offsety, 'ball');
         this.ballOnHand.setVisible(false);
        
         // crea un sprite de ARCADE con fisicas con la posicion y la imagen
@@ -27,6 +31,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             this.a = this.scene.input.keyboard.addKey('A');
             this.d = this.scene.input.keyboard.addKey('D');
             this.space = this.scene.input.keyboard.addKey('SPACE');
+
+            this.balldir = -1;
         }
         else {
             this.play('ratIdle');
@@ -34,17 +40,42 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             //Guardamos las animaciones para poder usarlas en cualquier momento
             this.idleAnim = 'ratIdle';
             this.moveAnim = 'ratMove';
+            this.getBallAnim = 'ratIdleBall';
+            this.moveBallAnim = 'ratMoveBall';
     
             /* INPUT */
             this.a = this.scene.input.keyboard.addKey('LEFT');
             this.d = this.scene.input.keyboard.addKey('RIGHT');
             this.space = this.scene.input.keyboard.addKey('DOWN');
+
+            this.offsetx *= -1;
+            this.balldir = 1;
         }
         
         this.speed = 50;
 
-        //Pelotas
-        this.haveBall = false;  //Al principio no tenemos ninguna pelota cogida
+        //Logica de las pelotas
+        this.space.on('up', () =>{
+            
+            if (this.haveBall) {    //Tenemos una pelota en las manos
+                //la lanza
+                //Añadimos una nueva pelota en la escena
+                this.haveBall = false;
+                this.scene.pelotas.push(new Ball(this.scene, this.x, this.y, this.balldir));
+                this.ballOnHand.setVisible(false);
+                
+            }
+            else {
+                if (this.player == 1 && this.scene.playerOneCanTake) {
+                    this.haveBall = true;
+                    this.ballOnHand.setVisible(true);
+                }
+                else if (this.player == 2 && this.scene.playerTwoCanTake) {
+                    this.haveBall = true;
+                    this.ballOnHand.setVisible(true);
+                }
+            }
+        });
 
         // añade a la escena el objeto entero
         // si no añades esto no se mete en la escena y no mira el preupdate
@@ -61,32 +92,10 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         //Pelota que llevamos en la mano
         if(this.haveBall) {
             this.ballOnHand.setVisible(true);
-            this.ballOnHand.x = this.x + 12;
+            this.ballOnHand.x = this.x + this.offsetx;
         }
 
         this.move();
-
-        //Logica de las pelotas
-        if (this.space.isDown) {
-            
-            if (this.haveBall) {    //Tenemos una pelota en las manos
-
-                
-            }
-            else {  //No tenemos ninguna pelota en las manos
-                //Diferenciamos que jugador coge la pelota
-                if (this.player == 1 && this.scene.playerOneCanTake){
-
-                    //Tenemos una pelota aproposito para la que cojamos
-                    
-
-                    
-                } else if (this.player == 2 && this.scene.playerTwoCanTake){
-
-                    console.log("Puede el 2");
-                }
-            }
-        }
     }
 
     //Se encarga de cambiar las animaciones
@@ -131,5 +140,4 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         }
     }
     
-
 }

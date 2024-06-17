@@ -23,19 +23,21 @@ export default class Ball extends Phaser.Physics.Arcade.Sprite {
 
         //Movimiento de la pelota
         //Si no está quieta lo movemos
-        if(this.direction != 0) {
+        if(this.direction !== 0) {
             this.setVelocityY(this.speed * this.direction);
+
+            //Si llega al final la paramos en la fila donde debe estar
+            if (this.y > 460 || this.y < 168) {
+
+                if (this.y >= 460) {this.y = 460}
+                else {this.y = 168}
+
+                this.direction = 0;
+                this.setVelocityY(0);
+            }
         }
 
-        //Si llega al final la paramos en la fila donde debe estar
-        if (this.y > 460 || this.y < 168) {
-
-            if (this.y > 460) {this.y = 460}
-            else {this.y = 168}
-
-            this.direction = 0;
-            this.setVelocityY(0);
-        }
+        
     }
 
     die() {
