@@ -16,7 +16,7 @@ export default class Boot extends Phaser.Scene {
         this.load.image('score', './assets/score.png');      //Puntuación
 
         //Personajes
-        this.load.spritesheet('pinguin', './assets/penguin40.png', {frameWidth: 40, frameHeight: 40});
+        this.load.spritesheet('penguin', './assets/penguin40.png', {frameWidth: 40, frameHeight: 40});
         this.load.spritesheet('rat', './assets/rat32.png', {frameWidth: 32, frameHeight: 32});
     }
 
@@ -105,7 +105,7 @@ export default class Boot extends Phaser.Scene {
 
         this.anims.create({
             key: 'penguinStun',
-            frames: this.anims.generateFrameNumbers('penguin', {start:9, end:10}),
+            frames: this.anims.generateFrameNumbers('penguin', {start:3, end:4}),
             frameRate: 5,
             repeat: -1
         });
@@ -119,7 +119,7 @@ export default class Boot extends Phaser.Scene {
         
         this.anims.create({
             key: 'penguinLose',
-            frames: this.anims.generateFrameNumbers('penguin', {start:8, end:8}),
+            frames: this.anims.generateFrameNumbers('penguin', {start:8, end:10}),
             frameRate: 5,
             repeat: -1
         });
@@ -129,6 +129,7 @@ export default class Boot extends Phaser.Scene {
 
     //Pasamos a la escena del menú
     create() {
+        this.createAnimations();
         this.scene.start("level");
     }
 }

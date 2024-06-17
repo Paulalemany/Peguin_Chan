@@ -1,6 +1,6 @@
 /* Clase que representa al jugador */
 
-export default class Player extends Phaser.GameObjects.Container {
+export default class Player extends Phaser.Physics.Arcade.Sprite {
     
     //constructor del jugador
     constructor(scene, x, y){
@@ -9,21 +9,29 @@ export default class Player extends Phaser.GameObjects.Container {
         super(scene, x, y);
        
         // crea un sprite de ARCADE con fisicas con la posicion y la imagen
-        this.player = this.scene.physics.add.sprite(x, y, 'pinguin');
+        this.play('penguinIdle');
 
-        
+        //Guardamos las animaciones para poder usarlas en cualquier momento
+        this.idleAnim = 'penguinIdle';
+
+
         // añade a la escena el objeto entero
         // si no añades esto no se mete en la escena y no mira el preupdate
-        this.scene.add.existing(this);
+        scene.add.existing(this);
+        scene.physics.world.enable(this);
+        this.body.setImmovable(true);
     }
 
 
-    preUpdate() {
-        //para el input
-       
-
+    preUpdate(time, deltaTime) {
+        super.preUpdate(time, deltaTime);
     }
 
+    animate(anim) {
+        if (this.anims.currentAnim.key !== anim) {
+            this.anims.play(anim);
+        }
+    }
     
 
 }

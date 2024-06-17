@@ -1,6 +1,7 @@
 /* Clase que representa al enemigo */
 
-export default class Enemy extends Phaser.GameObjects.Container {
+//DEBEMOS PONERLO EN ARCADE PARA PODER USAR LAS FUNCIONES   
+export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     
     //constructor del jugador
     constructor(scene, x, y){
@@ -8,22 +9,30 @@ export default class Enemy extends Phaser.GameObjects.Container {
         //NO DEBE TENER {} SI SE PONEN INTERPRETA QUE PASAS UN OBJETO
         super(scene, x, y);
        
-        // crea un sprite de ARCADE con fisicas con la posicion y la imagen
-        this.player = this.scene.physics.add.sprite(x, y, 'rat');
+        // En vez de poner un sprite, activamos una animación
+        this.play('ratIdle');
 
-        
-        // añade a la escena el objeto entero
-        // si no añades esto no se mete en la escena y no mira el preupdate
-        this.scene.add.existing(this);
+        //Guardamos las animaciones para poder usarlas en cualquier momento
+        this.idleAnim = 'ratIdle';
+        this.moveAnim = 'ratMove';
+
+        scene.add.existing(this);
+        scene.physics.world.enable(this);
+        this.body.setImmovable(true);
     }
 
 
-    preUpdate() {
-        //para el input
-       
+    preUpdate(time, deltaTime) {
+        super.preUpdate(time, deltaTime);
+    }
+
+    move() {
 
     }
 
-    
-
+    animate(anim) {
+        if (this.anims.currentAnim.key !== anim) {
+            this.anims.play(anim);
+        }
+    }
 }
