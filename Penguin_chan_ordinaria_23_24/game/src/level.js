@@ -30,6 +30,30 @@ export default class Level extends Phaser.Scene {
         this.mesa = this.add.image(240, 320, "mesa");   //Mesa
         this.score = this.add.image(400, 300, "score");  //Puntuación
 
+        /* FIN JUEGO */
+        this.winText = this.add.text(130, 200, 'Peguin-Chan', {
+            fontFamily: 'Babelgam',
+            fontSize: 50,
+            stroke: "#FFFFFF" ,
+            strokeThickness: 3,
+            color: '#5163BB',
+            align: 'center'
+        }).setVisible(false);
+
+        this.puntuacion = this.add.text(150,250, this.up + '/' + this.down, {
+            fontFamily: 'Babelgam',
+            fontSize: 50,
+            stroke: "#FFFFFF" ,
+            strokeThickness: 3,
+            color: '#5163BB',
+            align: 'center'
+        }).setVisible(false);
+
+
+        this.winSound = this.sound.add('peguinWin');
+        this.loseSound = this.sound.add('peguinLose');
+        this.throwBall = this.sound.add('throw');
+
         //Pelotas
         this.up = 0;
         this.down = 0;
@@ -97,6 +121,7 @@ export default class Level extends Phaser.Scene {
                     player.haveBall = true;
                     ball.destroy()
                     this.down--;
+                    this.throwBall.play();
                 }
                 else if(ball.direction == 1) {
                     player.stunned = true;
@@ -116,6 +141,7 @@ export default class Level extends Phaser.Scene {
                     player.haveBall = true;
                     ball.destroy();
                     this.up--;
+                    this.throwBall.play();
                 }
                 else if(ball.direction == -1) {
                     player.stunned = true;
@@ -139,33 +165,23 @@ export default class Level extends Phaser.Scene {
     }
 
     gameOver() {
-        this.winText = this.add.text(130, 200, 'Peguin-Chan', {
-            fontFamily: 'Babelgam',
-            fontSize: 50,
-            stroke: "#FFFFFF" ,
-            strokeThickness: 3,
-            color: '#5163BB',
-            align: 'center'
-        })
-
         if (this.up >= 10) {    //Hemos ganado
             this.winText.setText("You Won :)");
+            this.winSound.play();
         } else {    //Hemos perdido
             this.winText.setText("You Lost :(");
+            this.loseSound.play();
         }
 
-        //Ponemos la puntuación del juego
-        this.puntuacion = this.add.text(150,250, this.up + '/' + this.down, {
-            fontFamily: 'Babelgam',
-            fontSize: 50,
-            stroke: "#FFFFFF" ,
-            strokeThickness: 3,
-            color: '#5163BB',
-            align: 'center'
-        })
-
+        this.winText.setVisible(true);
         this.finalContador = setInterval(() => {
             this.scene.start("title");
         }, 4000);
+
+        //Ponemos la puntuación del juego
+        this.puntuacion.setText(this.up + '/' + this.down);
+        this.puntuacion.setVisible(true);
+
+        
     }
 }

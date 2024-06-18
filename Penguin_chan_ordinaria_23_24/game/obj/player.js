@@ -20,6 +20,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.offsetx = 12;
         this.offsety = 5;
         this.stun = 200;
+        this.throwBall = scene.sound.add('throw');
+        this.stunSound = scene.sound.add('stun');
 
         //Balas
         this.balldir;
@@ -75,6 +77,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                     this.haveBall = false;
                     this.scene.pelotas.push(new Ball(this.scene, this.x, this.y, this.balldir));
                     this.ballOnHand.setVisible(false);
+                    this.throwBall.play();
                     
                 }
                 else {
@@ -120,6 +123,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     stuneado() {
         this.animate(this.stunAnim);
+        this.stunSound.play();
     }
 
     //Imput unicamente de movimiento
