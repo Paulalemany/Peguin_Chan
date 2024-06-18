@@ -31,6 +31,9 @@ export default class Level extends Phaser.Scene {
         this.score = this.add.image(400, 300, "score");  //Puntuación
 
         //Pelotas
+        this.up = 0;
+        this.down = 0;
+
         //Bucles for en javaScript
         this.pelotas = []; 
         for (let step = 0; step < 10; step++) {
@@ -39,9 +42,11 @@ export default class Level extends Phaser.Scene {
 
             if (step < 5) {    //pelotas de la rat
                 ball = new Ball(scene, 160 + ( step * 40 ), 170, 0);
+                this.up++;
             }
             else {  //Pelotas del pinguino
                 ball = new Ball(scene, 160 + ( (step - 5) * 40 ), 460, 0);
+                this.down++;
             }
 
             this.pelotas.push(ball);
@@ -91,10 +96,11 @@ export default class Level extends Phaser.Scene {
                 if (!player.stunned && !player.haveBall && player.space.isDown) {
                     player.haveBall = true;
                     ball.destroy()
+                    this.down--;
                 }
                 else if(ball.direction == 1) {
                     player.stunned = true;
-                    this.intervaloContador = setInterval(() => {
+                    this.stunOneContador = setInterval(() => {
                         player.stunned = false;
                     }, 2000);
                 }
@@ -109,10 +115,11 @@ export default class Level extends Phaser.Scene {
                 if (!player.stunned &&!player.haveBall && player.space.isDown) {
                     player.haveBall = true;
                     ball.destroy();
+                    this.up--;
                 }
                 else if(ball.direction == -1) {
                     player.stunned = true;
-                    this.intervaloContador = setInterval(() => {
+                    this.stunTwoContador = setInterval(() => {
                         player.stunned = false;
                     }, 2000);
                 }
@@ -123,5 +130,42 @@ export default class Level extends Phaser.Scene {
         if (this.time >= 0) {
             this.contador.setText(this.time);
         }
+        else {
+            this.gameOver();
+        }
+
+        //pelotas en juego
+        if(this.up >= 10 || this.down >= 10) { this.gameOver(); }
+    }
+
+    gameOver() {
+        this.winText = this.add.text(130, 200, 'Peguin-Chan', {
+            fontFamily: 'Babelgam',
+            fontSize: 50,
+            stroke: "#FFFFFF" ,
+            strokeThickness: 3,
+            color: '#5163BB',
+            align: 'center'
+        })
+
+        if (this.up >= 10) {    //Hemos ganado
+            this.winText.setText("You Won :)");
+        } else {    //Hemos perdido
+            this.winText.setText("You Lost :(");
+        }
+
+        //Ponemos la puntuación del juego
+        this.puntuacion = this.add.text(150,250, this.up + '/' + this.down, {
+            fontFamily: 'Babelgam',
+            fontSize: 50,
+            stroke: "#FFFFFF" ,
+            strokeThickness: 3,
+            color: '#5163BB',
+            align: 'center'
+        })
+
+        this.finalContador = setInterval(() => {
+            this.scene.start("title");
+        }, 4000);
     }
 }

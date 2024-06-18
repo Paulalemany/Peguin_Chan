@@ -9,6 +9,7 @@ export default class Boot extends Phaser.Scene {
     //Cargamos en esta clase todas las img del juego
     preload(){
 
+        //Imagenes
         this.load.image('ball', './assets/ball16.png');     //Pelota
 
         this.load.image('fondo', './assets/background.png'); //Fondo
@@ -18,6 +19,13 @@ export default class Boot extends Phaser.Scene {
         //Personajes
         this.load.spritesheet('penguin', './assets/penguin40.png', {frameWidth: 40, frameHeight: 40});
         this.load.spritesheet('rat', './assets/rat32.png', {frameWidth: 32, frameHeight: 32});
+
+        //Sonidos
+        this.load.audio('peguinWin', './assets/sounds/win.mp3');
+        this.load.audio('peguinLose', './assets/sounds/lose.mp3');
+        this.load.audio('collide', './assets/sounds/collide.mp3');
+        this.load.audio('throw', './assets/sounds/throw_ball.mp3');
+        this.load.audio('stun', './assets/sounds/stun.mp3');
     }
 
     //Animaciones por spritesheet

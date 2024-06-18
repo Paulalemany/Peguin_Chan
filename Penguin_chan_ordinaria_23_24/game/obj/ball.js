@@ -6,6 +6,7 @@ export default class Ball extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, direction) {
     super(scene, x, y, 'ball');
 
+    this.scene = scene;
     //Direction:
         //0 -> Quieta
         //1 -> Abajo
@@ -29,13 +30,19 @@ export default class Ball extends Phaser.Physics.Arcade.Sprite {
             //Si llega al final la paramos en la fila donde debe estar
             if (this.y > 460 || this.y < 168) {
 
-                if (this.y >= 460) {this.y = 460}
-                else {this.y = 168}
+                if (this.y >= 460) {
+                    this.y = 460
+                    this.scene.down++;
+                    console.log(this.scene.down);
+                }
+                else {
+                    this.y = 168
+                    this.scene.up++;
+                    console.log(this.scene.up);
+                }
 
                 this.direction = 0;
                 this.setVelocityY(0);
-
-                //Comprobamos si ha colisionado con un jugador?
                 
             }
         }

@@ -14,8 +14,6 @@ export default class Title extends Phaser.Scene {
 	//Hacemos el create, lo que ocurre al crear la escena
 	create() {
 
-		console.log("Título");
-
         //Hacemos referencia a esta misma escena
         const scene = this;
 
