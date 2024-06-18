@@ -12,6 +12,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         //Variables
         this.player = player;
         this.scene = scene;
+        this.stunned = false;
+        this.playerInput = true;
+        
 
         //Datos
         this.offsetx = 12;
@@ -33,6 +36,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             this.moveAnim = 'penguinMove';
             this.getBallAnim = 'penguinIdleBall';
             this.moveBallAnim = 'penguinMoveBall';
+            this.stunAnim = 'penguinStun';
     
             /* INPUT */
             this.a = this.scene.input.keyboard.addKey('A');
@@ -49,6 +53,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             this.moveAnim = 'ratMove';
             this.getBallAnim = 'ratIdleBall';
             this.moveBallAnim = 'ratMoveBall';
+            this.stunAnim = 'ratStun';
     
             /* INPUT */
             this.a = this.scene.input.keyboard.addKey('LEFT');
@@ -63,23 +68,24 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
         //Logica de las pelotas
         this.space.on('up', () =>{
-            
-            if (this.haveBall) {    //Tenemos una pelota en las manos
-                //la lanza
-                //Añadimos una nueva pelota en la escena
-                this.haveBall = false;
-                this.scene.pelotas.push(new Ball(this.scene, this.x, this.y, this.balldir));
-                this.ballOnHand.setVisible(false);
-                
-            }
-            else {
-                if (this.player == 1 && this.scene.playerOneCanTake) {
-                    this.haveBall = true;
-                    this.ballOnHand.setVisible(true);
+            if (!this.stunned) {
+                if (this.haveBall) {    //Tenemos una pelota en las manos
+                    //la lanza
+                    //Añadimos una nueva pelota en la escena
+                    this.haveBall = false;
+                    this.scene.pelotas.push(new Ball(this.scene, this.x, this.y, this.balldir));
+                    this.ballOnHand.setVisible(false);
+                    
                 }
-                else if (this.player == 2 && this.scene.playerTwoCanTake) {
-                    this.haveBall = true;
-                    this.ballOnHand.setVisible(true);
+                else {
+                    if (this.player == 1 && this.scene.playerOneCanTake) {
+                        this.haveBall = true;
+                        this.ballOnHand.setVisible(true);
+                    }
+                    else if (this.player == 2 && this.scene.playerTwoCanTake) {
+                        this.haveBall = true;
+                        this.ballOnHand.setVisible(true);
+                    }
                 }
             }
         });
@@ -92,7 +98,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.body.setSize(32, 32);  //Para que ambos personajes tengan el mismo collider
     }
 
-
     preUpdate(time, deltaTime) {
         super.preUpdate(time, deltaTime);
 
@@ -102,7 +107,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             this.ballOnHand.x = this.x + this.offsetx;
         }
 
-        this.move();
+        if (this.stunned) { this.stuneado();}
+        else{ this.move(); }
     }
 
     //Se encarga de cambiar las animaciones
@@ -110,6 +116,10 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         if (this.anims.currentAnim.key !== anim) {
             this.anims.play(anim);
         }
+    }
+
+    stuneado() {
+        this.animate(this.stunAnim);
     }
 
     //Imput unicamente de movimiento
@@ -146,5 +156,4 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             this.setVelocityX(0);
         }
     }
-    
 }

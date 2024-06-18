@@ -85,16 +85,18 @@ export default class Level extends Phaser.Scene {
     update() {
 
         //Pelotas
-
         //Para comprobar si lo puede coger o no
         this.playerOneCanTake = this.physics.overlap(   //Si se superponen
             this.pelotas, this.player, (ball, player) => {
-                if (!player.haveBall && player.space.isDown) {
+                if (!player.stunned && !player.haveBall && player.space.isDown) {
                     player.haveBall = true;
                     ball.destroy()
                 }
                 else if(ball.direction == 1) {
-                    console.log('stun');
+                    player.stunned = true;
+                    this.intervaloContador = setInterval(() => {
+                        player.stunned = false;
+                    }, 2000);
                 }
             }, null, this
         );
@@ -104,12 +106,15 @@ export default class Level extends Phaser.Scene {
         if (this.playerdos !== undefined && this.modGame == 'vs') {
             this.playerTwoCanTake = this.physics.overlap(
                 this.pelotas, this.playerdos, (ball, player) => {
-                if (!player.haveBall && player.space.isDown) {
+                if (!player.stunned &&!player.haveBall && player.space.isDown) {
                     player.haveBall = true;
                     ball.destroy();
                 }
                 else if(ball.direction == -1) {
-                    console.log('stun');
+                    player.stunned = true;
+                    this.intervaloContador = setInterval(() => {
+                        player.stunned = false;
+                    }, 2000);
                 }
             }, null, this);
         }
