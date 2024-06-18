@@ -134,20 +134,35 @@ export default class Level extends Phaser.Scene {
 
         //Si hay jugador dos lo hacemos también con el jugador dos
         //Es para que se haga independientemente de si es la IA o el jugador
-        if (this.playerdos !== undefined && this.modGame == 'vs') {
+        if (this.modGame == 'vs') {
             this.playerTwoCanTake = this.physics.overlap(
                 this.pelotas, this.playerdos, (ball, player) => {
                 if (!player.stunned &&!player.haveBall && player.space.isDown) {
                     player.haveBall = true;
                     ball.destroy();
                     this.up--;
-                    this.throwBall.play();
                 }
                 else if(ball.direction == -1) {
                     player.stunned = true;
                     this.stunTwoContador = setInterval(() => {
                         player.stunned = false;
                     }, 2000);
+                }
+            }, null, this);
+        }
+        else {
+            this.playerTwoCanTake = this.physics.overlap(
+                this.pelotas, this.playerdos, (ball, enemy) => {
+                if (!enemy.stunned &&!enemy.haveBall && enemy.shootTime == 100) {
+                    ball.destroy();
+                    this.up--;
+                    enemy.haveBall = true;
+                }
+                else if(ball.direction == -1) {
+                    //enemy.stunned = true;
+                    //this.stunTwoContador = setInterval(() => {
+                    //    enemy.stunned = false;
+                    //}, 2000);
                 }
             }, null, this);
         }
