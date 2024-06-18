@@ -34,6 +34,9 @@ export default class Ball extends Phaser.Physics.Arcade.Sprite {
 
                 this.direction = 0;
                 this.setVelocityY(0);
+
+                //Comprobamos si ha colisionado con un jugador?
+                
             }
         }
 

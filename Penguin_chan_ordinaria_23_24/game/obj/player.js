@@ -8,10 +8,17 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
         //NO DEBE TENER {} SI SE PONEN INTERPRETA QUE PASAS UN OBJETO
         super(scene, x, y);
+
+        //Variables
         this.player = player;
         this.scene = scene;
+
+        //Datos
         this.offsetx = 12;
         this.offsety = 5;
+        this.stun = 200;
+
+        //Balas
         this.balldir;
         this.haveBall = false; 
         this.ballOnHand = scene.add.image (this.x + this.offsetx, this.y - this.offsety, 'ball');
